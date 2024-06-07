@@ -4,7 +4,7 @@ This project generates an array of exchange rates with values for currencies lik
 # Command for start api▶️
 uviconr main:app --reload
 
-if there is a subfolder of the application
+**if there is a subfolder of the application**
 
-uvicorn sql_app.main:app --reload
+uvicorn api_sql.main:app --reload
 
