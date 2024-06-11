@@ -5,19 +5,19 @@ For the database we used sqLite.
 To build the API we used [fastAPI](https://fastapi.tiangolo.com/tutorial/sql-databases/#install-sqlalchemy)
 
 # Before starting the project 📋
-<small>be at the root of the project</small>
-python3 -m venv venv
+<h5>be at the root of the project</h5>
+<p>python3 -m venv venv</p>
 
-<small>activated the environment</small>
-source venv/bin/activated
+<h5>activated the environment</h5>
+<p>source venv/bin/activated</p>
 
-<small>in environment do</small>
-pip install -r requirements.txt
+<h5>in environment do</h5>
+<p>pip install -r requirements.txt</p>
 
 # Command for start project ▶️
-<small>if there is a subfolder of the application</small>
-uvicorn api_sql.main:app --reload
+<h5>if there is a subfolder of the application</h5>
+<p>uvicorn api_sql.main:app --reload</p>
 
-** or **
+ or 
 
-uvicorn main:app --reload
+<p>uvicorn main:app --reload</p>
