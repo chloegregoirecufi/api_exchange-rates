@@ -12,23 +12,23 @@
             <h1 class="mt-5">Exchange Rates</h1>
             <form method="get" action="/search">
                 <div class="form-group">
-                    <label for="date">Search by Date:</label>
-                    <input type="date" id="date" name="date" class="form-control" required>
+                    <label for="date">Reload data</label>
+                    <button type="submit" class="btn btn-light mb-2 btn-outline-secondary">Reload</button></div></form>
+                    <div>
+                        <input type="date" id="date" name="date" style="width: 150px;" required>
+                        {{ message }}
+                    </div>
+                    <div class="mt-5">
+                        {% if tables %}
+                            {% for table in tables %}
+                                {{ table | safe }}
+                            {% endfor %}
+                        {% else %}
+                            <p>No data available.</p>
+                        {% endif %}
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Search</button>
             </form>
-            {% if message %}
-                <div class="alert alert-info">{{ message }}</div>
-            {% endif %}
-            <div class="mt-5">
-                {% if tables %}
-                    {% for table in tables %}
-                        {{ table | safe }}
-                    {% endfor %}
-                {% else %}
-                    <p>No data available.</p>
-                {% endif %}
-            </div>
         </div>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
