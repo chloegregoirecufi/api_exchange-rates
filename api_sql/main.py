@@ -66,10 +66,14 @@ async def get_data():
             query = select(ExchangeRate).filter(ExchangeRate.date == date)
             result = db.execute(query).scalars().all()
             if result:
-                rates = {record.currency: record.rate for record in result}
-                date_obj = datetime.strptime(date, '%Y-%m-%d') 
-                rates['date'] = date_obj.strftime('%Y-%m-%d')
-                exchange_data.append(rates)
+                rates = {'date': date}  # Initialisation du dictionnaire avec la date
+                for record in result:
+                    rates[record.currency] = record.rate  # Ajout de chaque devise avec son taux
+                exchange_data.append(rates) 
+                # rates = {record.currency: record.rate for record in result}
+                # date_obj = datetime.strptime(date, '%Y-%m-%d') 
+                # rates['date'] = date_obj.strftime('%Y-%m-%d')
+                # exchange_data.append(rates)
     finally:
         db.close()
 
@@ -110,8 +114,8 @@ async def search(request: Request):
         
         if not result.empty:
             # Extract data related to the date for the message
-            message_data = result.to_dict(orient='records')[0]  # Assuming only one row for the searched date
-            message = f"Search result for {date}: {message_data}"  # Include the message data
+            message_data = {key: value for key, value in result.to_dict(orient='records')[0].items() if key != 'date'}
+            message = ", ".join([f"{currency}: {rate}" for currency, rate in message_data.items()])
             tables = [df.to_html(classes='data')]
             return templates.TemplateResponse('index.html', {
                 "request": request,
