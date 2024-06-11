@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Exchange Rates</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/style.css">
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="mt-5">Exchange Rates</h1>
+            <form method="get" action="/search">
+                <div class="form-group">
+                    <label for="date">Search by Date:</label>
+                    <input type="date" id="date" name="date" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+            {% if message %}
+                <div class="alert alert-info">{{ message }}</div>
+            {% endif %}
+            <div class="mt-5">
+                {% if tables %}
+                    {% for table in tables %}
+                        {{ table | safe }}
+                    {% endfor %}
+                {% else %}
+                    <p>No data available.</p>
+                {% endif %}
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                let today = new Date().toISOString().split('T')[0];
+                document.getElementById('date').value = today;
+            });
+        </script>
+    </body>
+</html>
