@@ -4,7 +4,7 @@ For this project the language is python.
 For the database we used sqLite.
 To build the API we used [fastAPI](https://fastapi.tiangolo.com/tutorial/sql-databases/#install-sqlalchemy)
 
-# Before starting the project:clipboard:
+# Before starting the project 📋
 pip install -r requirements.txt
 
 # Command for start API ▶️
