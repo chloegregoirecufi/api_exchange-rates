@@ -1,5 +1,5 @@
 from sqlalchemy import  Column, Float, Integer, String, Date
-from sqlalchemy.orm import relationship
+
 
 from .database import Base
 

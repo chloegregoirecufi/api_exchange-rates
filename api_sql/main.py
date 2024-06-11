@@ -3,15 +3,13 @@ from fastapi.responses import HTMLResponse
 import pandas as pd
 import os
 import httpx
-from fastapi import FastAPI, Depends, HTTPException, Request,  BackgroundTasks
+from fastapi import FastAPI, HTTPException, Request,  BackgroundTasks
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from . import crud, models, schemas, database
+from . import models
 from .database import SessionLocal, engine
-from typing import List
 from datetime import datetime, timedelta
 from .models import ExchangeRate
-import requests
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
@@ -22,7 +20,7 @@ app = FastAPI()
 
 templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), '../app_exchange_rate/templates'))
 
-app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), '../app_exchange_rate')), name="static")
+app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), '../app_exchange_rate/static')), name="static")
 
 API_KEY="b4f0e87676794055821cdf83f5944ece"
 BASE_URL = f'https://openexchangerates.org/api/latest.json?api_id={API_KEY}&symbols=EUR,USD,JPY,GBP'
@@ -89,7 +87,7 @@ async def get_data():
 #BackgroundTasks est use for execut funtction 'store_daily_exchange_rates en tache de fond
 # lorsque la route est appelé. Cela permet d'exécuter la maj des taux de change en arrière plan
 #sans bloquer la réponse de la route
-@app.get('/home')
+@app.get('/')
 async def index(request: Request, background_tasks: BackgroundTasks):
     background_tasks.add_task(store_daily_exchange_rates, SessionLocal())
     df = await get_data() 

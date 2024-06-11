@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from . import models, schemas
+from . import models
 
 def get_exchange_rate(db: Session, exchangeRate_id: int):
     return db.query(models.exchangeRate).filter(models.exchangeRate.id == exchangeRate_id).first()
