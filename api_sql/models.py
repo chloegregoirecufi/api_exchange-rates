@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from .database import Base
 
 
-class exchangeRate(Base):
+class ExchangeRate(Base):
     __tablename__ = "exchange_rate"
 
     id = Column(Integer, primary_key=True)

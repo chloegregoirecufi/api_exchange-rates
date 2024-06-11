@@ -5,3 +5,7 @@ fastapi==0.111.0
 pymysql==1.1.1
 sqlalchemy==2.0.30
 uvicorn==0.30.1
+pandas==2.2.2
+jinja2==3.1.4
+aiofiles==23.2.1
+httpx==0.27.0
