@@ -12,12 +12,21 @@ from datetime import datetime, timedelta
 from .models import ExchangeRate
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 
 
-models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+origins = ["http://127.0.0.1:4200"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_methods=["GET", "POST", "PUT", "DELETE"]
+    )
+   
+
+models.Base.metadata.create_all(bind=engine)
 templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), '../app_exchange_rate/templates'))
 
 app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), '../app_exchange_rate/static')), name="static")
@@ -87,16 +96,28 @@ async def get_data():
 #BackgroundTasks est use for execut funtction 'store_daily_exchange_rates en tache de fond
 # lorsque la route est appelé. Cela permet d'exécuter la maj des taux de change en arrière plan
 #sans bloquer la réponse de la route
-@app.get('/')
+@app.get('/home')
 async def index(request: Request, background_tasks: BackgroundTasks):
     background_tasks.add_task(store_daily_exchange_rates, SessionLocal())
     df = await get_data() 
-    tables = [df.to_html(classes='data')] 
+
+     # Extraction des données pour le message
+    message_data = {key: value for key, value in df.to_dict(orient='records')[0].items() if key != 'date'}
+    message = ", ".join([f"{currency}: {rate}" for currency, rate in message_data.items()])
+    
+    # Conversion du DataFrame en table HTML
+    tables = [df.to_html(classes='data')]
+    
     return templates.TemplateResponse('index.html', {
-        "request": request, 
-        "tables":tables, 
-        "titles": df.columns.values
+        "request": request,
+        "tables": tables,
+        "result": df,  # Pass the DataFrame result
+        "titles": df.columns.values,
+        "message": message
     })
+    # data_dict = df.to_dict(orient='records')
+    
+    # return {"data": data_dict}
 
 
 @app.get('/search', response_class=HTMLResponse)

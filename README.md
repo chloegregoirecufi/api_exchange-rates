@@ -9,7 +9,7 @@ To build the API we used [fastAPI](https://fastapi.tiangolo.com/tutorial/sql-dat
 <p>python3 -m venv venv</p>
 
 <h5>activated the environment</h5>
-<p>source venv/bin/activated</p>
+<p>source venv/bin/activate</p>
 
 <h5>in environment do</h5>
 <p>pip install -r requirements.txt</p>
